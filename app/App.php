@@ -20,7 +20,13 @@ function csv_to_array(array $csvs): array
     foreach ($csvs as $document) {
         $current_file = fopen($document, 'r');
         while (($line = fgetcsv($current_file)) !== false) {
-            array_push($data_array, $line);
+            $row = [
+                'date' => $line[0],
+                'check_id' => $line[1],
+                'description' => $line[2],
+                'amount' => $line[3]
+            ];
+            array_push($data_array, $row);
         }
     }
     array_shift($data_array);
@@ -33,12 +39,11 @@ function array_to_html(array $arr): string
     foreach ($arr as $row) {
         $html_sgl_row = <<<HTML
             <tr>
-                <td>$row[0]</td>    
-                <td>$row[1]</td>    
-                <td>$row[2]</td>    
-                <td>$row[3]</td>    
+                <td>$row[date]</td>    
+                <td>$row[check_id]</td>    
+                <td>$row[description]</td>    
+                <td>$row[amount]</td>    
             </tr>
-            
         HTML;
         $html_rows .= $html_sgl_row;
     }
