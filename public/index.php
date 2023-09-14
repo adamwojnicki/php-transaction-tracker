@@ -9,5 +9,6 @@ define('FILES_PATH', $root . 'transaction_files' . DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
 
 /* YOUR CODE (Instructions in README.md) */
-require_once(APP_PATH . 'App.php');
-require_once(VIEWS_PATH . 'transactions.php');
+require(APP_PATH . 'helpers.php');
+require(APP_PATH . 'App.php');
+require(VIEWS_PATH . 'transactions.php');

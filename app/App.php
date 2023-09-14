@@ -20,11 +20,13 @@ function csv_to_array(array $csvs): array
     foreach ($csvs as $document) {
         $current_file = fopen($document, 'r');
         while (($line = fgetcsv($current_file)) !== false) {
+            [$date, $check_id, $description, $amount] = $line;
+            $amount = str_replace([',', '$'], '', $amount);
             $row = [
-                'date' => $line[0],
-                'check_id' => $line[1],
-                'description' => $line[2],
-                'amount' => $line[3]
+                'date' => $date,
+                'check_id' => $check_id,
+                'description' => $description,
+                'amount' => $amount
             ];
             array_push($data_array, $row);
         }
@@ -37,12 +39,15 @@ function array_to_html(array $arr): string
 {
     $html_rows = "";
     foreach ($arr as $row) {
+        $amount_class = $row['amount'] < 0 ? 'expense' : 'income';
+        $formatted_amount = format_dollar_amount($row['amount']);
+        $formatted_date = format_date($row['date']);
         $html_sgl_row = <<<HTML
             <tr>
-                <td>$row[date]</td>    
+                <td>$formatted_date</td>    
                 <td>$row[check_id]</td>    
                 <td>$row[description]</td>    
-                <td>$row[amount]</td>    
+                <td class=$amount_class>$formatted_amount</td>    
             </tr>
         HTML;
         $html_rows .= $html_sgl_row;
@@ -50,15 +55,24 @@ function array_to_html(array $arr): string
     return $html_rows;
 }
 
-function calculate_total_income(array $arr): int
+function calculate_totals(array $arr): array
 {
-    $total = 0;
-    return $total;
+    $amounts = array_map(fn ($row) => floatval($row['amount']), $arr);
+    $incomes = (float) 0;
+    $expenses = (float) 0;
+    foreach ($amounts as $amount) {
+        $amount < 0 ? $expenses -= $amount : $incomes += $amount;
+    }
+    return [
+        'incomes' => $incomes,
+        'expenses' => $expenses,
+        'net_total' => $incomes - $expenses
+    ];
 }
+
 
 $file_paths = get_csv_filepaths();
 $data_array = csv_to_array($file_paths);
-$httab = array_to_html($data_array);
+$httable = array_to_html($data_array);
 
-// 4. COUNT TOTAL EXPENSE
-// 5. COUNT NET TOTAL
+$totals = calculate_totals($data_array);

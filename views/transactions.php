@@ -24,6 +24,14 @@
         tfoot tr th {
             text-align: right;
         }
+
+        .income {
+            color: green;
+        }
+
+        .expense {
+            color: red;
+        }
     </style>
 </head>
 
@@ -39,20 +47,20 @@
         </thead>
         <tbody>
             <!-- YOUR CODE -->
-            <?= $httab ?>
+            <?= $httable ?>
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="3">Total Income:</th>
-                <td><!-- YOUR CODE --></td>
+                <td><?= format_dollar_amount($totals['incomes']) ?></td>
             </tr>
             <tr>
                 <th colspan="3">Total Expense:</th>
-                <td><!-- YOUR CODE --></td>
+                <td><?= format_dollar_amount($totals['expenses']) ?></td>
             </tr>
             <tr>
                 <th colspan="3">Net Total:</th>
-                <td><!-- YOUR CODE --></td>
+                <td><?= format_dollar_amount($totals['net_total']) ?></td>
             </tr>
         </tfoot>
     </table>
