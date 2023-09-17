@@ -19,7 +19,12 @@ function csv_to_array(array $csvs): array
     $data_array = [];
     foreach ($csvs as $document) {
         $current_file = fopen($document, 'r');
+        $row_number = 1;
         while (($line = fgetcsv($current_file)) !== false) {
+            if ($row_number === 1) {
+                $row_number++;
+                continue;
+            }
             [$date, $check_id, $description, $amount] = $line;
             $amount = str_replace([',', '$'], '', $amount);
             $amount = floatval($amount);
@@ -32,7 +37,6 @@ function csv_to_array(array $csvs): array
             array_push($data_array, $row);
         }
     }
-    array_shift($data_array);
     return $data_array;
 }
 
