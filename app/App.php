@@ -22,6 +22,7 @@ function csv_to_array(array $csvs): array
         while (($line = fgetcsv($current_file)) !== false) {
             [$date, $check_id, $description, $amount] = $line;
             $amount = str_replace([',', '$'], '', $amount);
+            $amount = floatval($amount);
             $row = [
                 'date' => $date,
                 'check_id' => $check_id,

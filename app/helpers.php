@@ -1,6 +1,6 @@
 <?php
 
-function format_dollar_amount(string $amount): string
+function format_dollar_amount(float $amount): string
 {
     $isNegative = $amount < 0;
     return ($isNegative ? '-' : '') . '$' . number_format(abs($amount), 2);
