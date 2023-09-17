@@ -74,10 +74,3 @@ function calculate_totals(array $arr): array
         'net_total' => $incomes - $expenses
     ];
 }
-
-
-$file_paths = get_csv_filepaths();
-$data_array = csv_to_array($file_paths);
-$httable = array_to_html($data_array);
-
-$totals = calculate_totals($data_array);
